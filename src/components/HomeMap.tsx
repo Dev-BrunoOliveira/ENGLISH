@@ -16,7 +16,6 @@ interface HomeMapProps {
 export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, theme, onToggleTheme, goal, onStartLesson, onOpenSettings }) => {
   const levels = getLevelsForGoal(goal);
 
-  // Calculate Rank based on XP
   let rank = "Novice";
   if (xp >= 500) rank = "Explorer";
   if (xp >= 1500) rank = "Linguist";

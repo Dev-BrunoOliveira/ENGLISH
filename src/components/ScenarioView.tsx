@@ -53,14 +53,14 @@ export function ScenarioView({ scenario, progressPercent, levelTitle, streak, xp
   };
 
   const handleOptionClick = (option: DialogueOption) => {
-    if (scenario.requiresSpeaking) return; // Must use microphone if required
+    if (scenario.requiresSpeaking) return; 
     triggerFeedback(option.isCorrect, option);
   };
 
   const handleCheckSpeech = () => {
     if (!transcript) return;
     
-    // Find the correct option text to compare against
+   
     const correctOption = scenario.options.find(o => o.isCorrect);
     if (!correctOption) return;
 
