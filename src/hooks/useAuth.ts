@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 
 export function useAuth() {
-  const [user, setUser] = useState<string | null>(() => {
-    return localStorage.getItem('englishAppUser');
-  });
+  const [user, setUser] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {

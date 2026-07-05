@@ -2,9 +2,10 @@ import React from 'react';
 
 interface ScreenTransitionProps {
   isVisible: boolean;
+  duration?: number; // em milissegundos
 }
 
-export const ScreenTransition: React.FC<ScreenTransitionProps> = ({ isVisible }) => {
+export const ScreenTransition: React.FC<ScreenTransitionProps> = ({ isVisible, duration = 1500 }) => {
   if (!isVisible) return null;
 
   return (
@@ -17,7 +18,7 @@ export const ScreenTransition: React.FC<ScreenTransitionProps> = ({ isVisible })
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      animation: 'fadeInOut 1.5s ease-in-out', 
+      animation: `fadeInOut ${duration}ms ease-in-out`, 
     }}>
       <div style={{
         width: '220px', 

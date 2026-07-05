@@ -14,14 +14,34 @@ function App() {
   const [activeLessonId, setActiveLessonId] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
- 
+  const [transitionDuration, setTransitionDuration] = useState(1500);
+
+  const navigateWithTransition = (
+    newView: 'home' | 'lesson' | 'settings',
+    lessonId: number | null = null,
+    duration: number = 1500
+  ) => {
+    setTransitionDuration(duration);
+    setIsTransitioning(true);
+    
+    // Altera a tela na metade da transição (quando o loading está 100% visível)
+    setTimeout(() => {
+      setView(newView);
+      if (lessonId !== null) setActiveLessonId(lessonId);
+    }, duration / 2);
+
+    // Finaliza a transição
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, duration);
+  };
+
   useEffect(() => {
+    // Quando o usuário logar, vai direto para a lição ativa com a transição completa!
     if (user) {
-      setIsTransitioning(true);
-      const timer = setTimeout(() => setIsTransitioning(false), 1500);
-      return () => clearTimeout(timer);
+      navigateWithTransition('lesson', progress.unlockedLessonId || 1, 1500);
     }
-  }, [view, user]);
+  }, [user]);
 
   
   if (!user) {
@@ -34,21 +54,18 @@ function App() {
   }
 
   const handleStartLesson = (id: number) => {
-    setActiveLessonId(id);
-    setView('lesson');
+    navigateWithTransition('lesson', id, 1500);
   };
 
   const handleCompleteLesson = (earnedXp: number) => {
     if (activeLessonId) {
       completeLesson(activeLessonId, earnedXp);
     }
-    setView('home');
-    setActiveLessonId(null);
+    navigateWithTransition('home', null, 1500);
   };
 
   const handleQuitLesson = () => {
-    setView('home');
-    setActiveLessonId(null);
+    navigateWithTransition('home', null, 1500);
   };
 
   return (
@@ -61,7 +78,7 @@ function App() {
           nativeLang={progress.nativeLang}
           onSetNativeLang={setNativeLang}
           onStartLesson={handleStartLesson}
-          onOpenSettings={() => setView('settings')}
+          onOpenSettings={() => navigateWithTransition('settings', null, 800)}
         />
       )}
 
@@ -78,11 +95,11 @@ function App() {
         <Settings 
           onResetProgress={resetProgress}
           onLogout={logout}
-          onClose={() => setView('home')}
+          onClose={() => navigateWithTransition('home', null, 800)}
         />
       )}
 
-      <ScreenTransition isVisible={isTransitioning} />
+      <ScreenTransition isVisible={isTransitioning} duration={transitionDuration} />
     </div>
   );
 }
