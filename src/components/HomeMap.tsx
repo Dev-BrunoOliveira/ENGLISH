@@ -1,5 +1,5 @@
 import React from 'react';
-import { top1000Levels } from '../data/levelScenarios';
+import { getLevelsForGoal } from '../data/levelScenarios';
 import { BookOpen, Lock, Flame, Star, Settings as SettingsIcon } from 'lucide-react';
 import { availableLanguages } from '../data/phrases';
 
@@ -11,9 +11,11 @@ interface HomeMapProps {
   onSetNativeLang: (lang: string) => void;
   onStartLesson: (id: number) => void;
   onOpenSettings: () => void;
+  goal?: 'work' | 'travel' | 'entertainment' | 'study' | null;
 }
 
-export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, nativeLang, onSetNativeLang, onStartLesson, onOpenSettings }) => {
+export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, nativeLang, goal, onSetNativeLang, onStartLesson, onOpenSettings }) => {
+  const levels = getLevelsForGoal(goal);
   return (
     <div style={{ width: '100%', maxWidth: '600px', margin: '0 auto', padding: '1rem' }}>
       {/* Top Bar */}
@@ -60,7 +62,7 @@ export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, 
 
       {/* Path */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3rem', paddingBottom: '4rem' }}>
-        {top1000Levels.slice(0, 20).map((level, index) => {
+        {levels.slice(0, 20).map((level, index) => {
           // We only render the first 20 for performance in this UI demo
           const isUnlocked = level.id <= unlockedLessonId;
           const isCurrent = level.id === unlockedLessonId;

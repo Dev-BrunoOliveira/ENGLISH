@@ -6,6 +6,7 @@ export interface ProgressState {
   unlockedLessonId: number;
   streak: number;
   lastPlayedDate: string;
+  goal?: 'work' | 'travel' | 'entertainment' | 'study' | null;
 }
 
 export function useProgress() {
@@ -19,7 +20,8 @@ export function useProgress() {
       xp: 0,
       unlockedLessonId: 1,
       streak: 0,
-      lastPlayedDate: ''
+      lastPlayedDate: '',
+      goal: null
     };
   });
 
@@ -29,6 +31,10 @@ export function useProgress() {
 
   const setNativeLang = (lang: string) => {
     setProgress(prev => ({ ...prev, nativeLang: lang }));
+  };
+
+  const setUserGoal = (goal: 'work' | 'travel' | 'entertainment' | 'study') => {
+    setProgress(prev => ({ ...prev, goal }));
   };
 
   const completeLesson = (lessonId: number, earnedXp: number) => {
@@ -62,9 +68,10 @@ export function useProgress() {
       xp: 0,
       unlockedLessonId: 1,
       streak: 0,
-      lastPlayedDate: ''
+      lastPlayedDate: '',
+      goal: null
     });
   };
 
-  return { progress, setNativeLang, completeLesson, resetProgress };
+  return { progress, setNativeLang, setUserGoal, completeLesson, resetProgress };
 }

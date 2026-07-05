@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { top1000Levels, type DialogueOption } from '../data/levelScenarios';
+import { getLevelsForGoal, type DialogueOption } from '../data/levelScenarios';
 import { ScenarioView } from './ScenarioView';
 import { Heart } from 'lucide-react';
 import { playSuccessSound } from '../utils/audio';
@@ -9,14 +9,28 @@ interface LessonSessionProps {
   nativeLang: string;
   onComplete: (earnedXp: number) => void;
   onQuit: () => void;
+  goal?: 'work' | 'travel' | 'entertainment' | 'study' | null;
 }
 
-export const LessonSession: React.FC<LessonSessionProps> = ({ lessonId, nativeLang: _nativeLang, onComplete, onQuit }) => {
-  const [hearts, setHearts] = useState(5);
+export const LessonSession: React.FC<LessonSessionProps> = ({ lessonId, nativeLang: _nativeLang, goal, onComplete, onQuit }) => {
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const [microphoneEnabled, setMicrophoneEnabled] = useState(true);
 
-  const levelData = useMemo(() => top1000Levels.find(l => l.id === lessonId), [lessonId]);
+  const levelData = useMemo(() => {
+    const levels = getLevelsForGoal(goal, _nativeLang);
+    const data = levels.find(l => l.id === lessonId);
+    if (!data) return undefined;
+
+    if (!microphoneEnabled) {
+      return {
+        ...data,
+        scenarios: data.scenarios.filter(s => !s.requiresSpeaking)
+      };
+    }
+    
+    return data;
+  }, [lessonId, goal, _nativeLang, microphoneEnabled]);
 
   if (!levelData) {
     return (
@@ -30,13 +44,19 @@ export const LessonSession: React.FC<LessonSessionProps> = ({ lessonId, nativeLa
   if (levelData.scenarios.length === 0) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '80vh', textAlign: 'center' }}>
-        <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem', color: 'white' }}>Coming Soon!</h1>
+        <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem', color: 'white' }}>No Text Scenarios Available</h1>
         <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', marginBottom: '3rem', maxWidth: '500px' }}>
-          This level's scenarios are currently under construction. Check back soon for more 1000 phrase content!
+          This level only contained speaking tasks.
         </p>
         <button className="btn btn-primary" onClick={onQuit} style={{ padding: '16px 48px' }}>Back to Map</button>
       </div>
     );
+  }
+
+  // Handle case where filtering out speaking tasks makes current index out of bounds
+  if (currentScenarioIndex >= levelData.scenarios.length && !isFinished) {
+    setTimeout(() => setIsFinished(true), 0);
+    return null;
   }
 
   const handleOptionSelect = (isCorrect: boolean, _option?: DialogueOption) => {
@@ -48,8 +68,6 @@ export const LessonSession: React.FC<LessonSessionProps> = ({ lessonId, nativeLa
       } else {
         setCurrentScenarioIndex(currentScenarioIndex + 1);
       }
-    } else {
-      setHearts(prev => Math.max(0, prev - 1));
     }
   };
 
@@ -64,17 +82,6 @@ export const LessonSession: React.FC<LessonSessionProps> = ({ lessonId, nativeLa
     );
   }
 
-  if (hearts === 0) {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '80vh', textAlign: 'center' }}>
-        <Heart size={80} fill="#ef4444" color="#ef4444" style={{ marginBottom: '2rem', opacity: 0.5 }} />
-        <h1 style={{ fontSize: '3rem', marginBottom: '1rem', color: 'white' }}>Out of Hearts!</h1>
-        <p style={{ fontSize: '1.5rem', color: 'var(--text-secondary)', marginBottom: '3rem' }}>Don't give up, try again!</p>
-        <button className="btn btn-primary" onClick={onQuit} style={{ padding: '16px 48px', fontSize: '1.25rem' }}>Back to Map</button>
-      </div>
-    );
-  }
-
   const currentScenario = levelData.scenarios[currentScenarioIndex];
   const progressPercent = Math.round((currentScenarioIndex / levelData.scenarios.length) * 100);
 
@@ -82,10 +89,11 @@ export const LessonSession: React.FC<LessonSessionProps> = ({ lessonId, nativeLa
     <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto', height: '100vh', display: 'flex', flexDirection: 'column', padding: '1rem' }}>
        <ScenarioView 
          scenario={currentScenario}
-         hearts={hearts}
          progressPercent={progressPercent}
          onQuit={onQuit}
          onOptionSelect={handleOptionSelect}
+         onDisableMic={() => setMicrophoneEnabled(false)}
+         nativeLang={_nativeLang}
        />
     </div>
   );

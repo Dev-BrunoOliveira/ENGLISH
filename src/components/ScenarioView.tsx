@@ -6,13 +6,14 @@ import './SurvivalGame.css'; // Reusing the CSS styles
 
 interface ScenarioViewProps {
   scenario: Scenario;
-  hearts: number;
   progressPercent: number;
   onQuit: () => void;
   onOptionSelect: (isCorrect: boolean, option?: DialogueOption) => void;
+  onDisableMic: () => void;
+  nativeLang: string;
 }
 
-export function ScenarioView({ scenario, hearts, progressPercent, onQuit, onOptionSelect }: ScenarioViewProps) {
+export function ScenarioView({ scenario, progressPercent, onQuit, onOptionSelect, onDisableMic, nativeLang }: ScenarioViewProps) {
   const [selectedOption, setSelectedOption] = useState<DialogueOption | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackType, setFeedbackType] = useState<'success' | 'error' | null>(null);
@@ -87,9 +88,6 @@ export function ScenarioView({ scenario, hearts, progressPercent, onQuit, onOpti
         <div style={{ flex: 1, height: '16px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', overflow: 'hidden' }}>
           <div style={{ width: `${progressPercent}%`, height: '100%', background: 'linear-gradient(90deg, #22c55e, #4ade80)', transition: 'width 0.5s ease-out', borderRadius: '8px' }} />
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#ef4444', fontWeight: 'bold', fontSize: '1.25rem' }}>
-          <Heart size={28} fill="#ef4444" /> {hearts}
-        </div>
       </div>
 
       {/* NPC Area */}
@@ -104,7 +102,11 @@ export function ScenarioView({ scenario, hearts, progressPercent, onQuit, onOpti
             <h3>{scenario.npcName} <span>({scenario.npcRole})</span></h3>
             <p className="dialogue-text">"{scenario.npcDialogue}"</p>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
-               <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>({scenario.translatedDialogue['pt']})</span>
+               {!scenario.hideTranslation && scenario.translatedDialogue && (
+                 <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
+                   ({scenario.translatedDialogue[nativeLang] || scenario.translatedDialogue['en'] || ''})
+                 </span>
+               )}
                <button 
                   onClick={() => {
                     const u = new SpeechSynthesisUtterance(scenario.npcDialogue);
@@ -168,6 +170,22 @@ export function ScenarioView({ scenario, hearts, progressPercent, onQuit, onOpti
                 </button>
               </div>
             )}
+            
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+              <button 
+                onClick={onDisableMic} 
+                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'rgba(255,255,255,0.7)', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', transition: 'all 0.2s' }}
+              >
+                Can't speak now
+              </button>
+              <button 
+                onClick={() => onOptionSelect(true)} 
+                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'rgba(255,255,255,0.7)', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', transition: 'all 0.2s' }}
+              >
+                Skip
+              </button>
+            </div>
           </div>
         ) : (
           scenario.options.map((option) => (
@@ -198,9 +216,6 @@ export function ScenarioView({ scenario, hearts, progressPercent, onQuit, onOpti
             )}
             <h2>{feedbackType === 'success' ? 'Correct!' : 'Wrong!'}</h2>
             <p>{selectedOption ? selectedOption.feedback : "Try again!"}</p>
-            {feedbackType === 'error' && (
-              <p className="penalty-text">-1 Heart</p>
-            )}
           </div>
         </div>
       )}

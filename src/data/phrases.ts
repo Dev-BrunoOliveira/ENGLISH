@@ -6,6 +6,7 @@ export interface Phrase {
 }
 
 export const availableLanguages = [
+  { code: 'en', name: 'English' },
   { code: 'pt', name: 'Português' },
   { code: 'es', name: 'Español' },
   { code: 'fr', name: 'Français' },
@@ -99,5 +100,40 @@ export const phrases: Phrase[] = [
   { id: 47, lessonId: 10, english: "I am sad", translations: { pt: "Estou triste", es: "Estoy triste", fr: "Je suis triste", de: "Ich bin traurig", zh: "我很伤心", ja: "悲しいです", hi: "मैं उदास हूँ", ar: "أنا حزين", ru: "Мне грустно" } },
   { id: 48, lessonId: 10, english: "I am tired", translations: { pt: "Estou cansado", es: "Estoy cansado", fr: "Je suis fatigué", de: "Ich bin müde", zh: "我累了", ja: "疲れました", hi: "मैं थका हुआ हूँ", ar: "أنا متعب", ru: "Я устал" } },
   { id: 49, lessonId: 10, english: "I am angry", translations: { pt: "Estou com raiva", es: "Estoy enojado", fr: "Je suis en colère", de: "Ich bin wütend", zh: "我很生气", ja: "怒っています", hi: "मुझे गुस्सा आ रहा है", ar: "أنا غاضب", ru: "Я зол" } },
-  { id: 50, lessonId: 10, english: "I am sick", translations: { pt: "Estou doente", es: "Estoy enfermo", fr: "Je suis malade", de: "Ich bin krank", zh: "我生病了", ja: "病気です", hi: "मैं बीमार हूँ", ar: "أنا مريض", ru: "Я болен" } }
+  { id: 50, lessonId: 10, english: "I am sick", translations: { pt: "Estou doente", es: "Estoy enfermo", fr: "Je suis malade", de: "Ich bin krank", zh: "我生病了", ja: "病気です", hi: "मैं बीमार हूँ", ar: "أنا مريض", ru: "Я болен" } },
+
+  // Level 11: Work & Business
+  { id: 51, lessonId: 11, english: "I have a meeting", translations: { pt: "Eu tenho uma reunião", es: "Tengo una reunión", fr: "J'ai une réunion", de: "Ich habe ein Meeting", zh: "我有一个会议", ja: "会議があります", hi: "मेरी एक मीटिंग है", ar: "لدي اجتماع", ru: "У меня встреча" } },
+  { id: 52, lessonId: 11, english: "Please send the email", translations: { pt: "Por favor, envie o email", es: "Por favor envía el correo", fr: "Veuillez envoyer l'e-mail", de: "Bitte senden Sie die E-Mail", zh: "请发送电子邮件", ja: "メールを送ってください", hi: "कृपया ईमेल भेजें", ar: "يرجى إرسال البريد الإلكتروني", ru: "Пожалуйста, отправьте электронное письмо" } },
+  { id: 53, lessonId: 11, english: "I agree", translations: { pt: "Eu concordo", es: "Estoy de acuerdo", fr: "Je suis d'accord", de: "Ich stimme zu", zh: "我同意", ja: "同意します", hi: "मैं सहमत हूँ", ar: "أنا أوافق", ru: "Я согласен" } },
+  { id: 54, lessonId: 11, english: "I disagree", translations: { pt: "Eu discordo", es: "No estoy de acuerdo", fr: "Je ne suis pas d'accord", de: "Ich stimme nicht zu", zh: "我不同意", ja: "同意しません", hi: "मैं असहमत हूँ", ar: "أنا لا أوافق", ru: "Я не согласен" } },
+  { id: 55, lessonId: 11, english: "Good job", translations: { pt: "Bom trabalho", es: "Buen trabajo", fr: "Bon travail", de: "Gute Arbeit", zh: "干得好", ja: "よくやりました", hi: "बहुत बढ़िया", ar: "عمل جيد", ru: "Хорошая работа" } },
+
+  // Level 12: Entertainment & Pop Culture
+  { id: 56, lessonId: 12, english: "That is awesome", translations: { pt: "Isso é incrível", es: "Eso es increíble", fr: "C'est génial", de: "Das ist großartig", zh: "那太棒了", ja: "それは素晴らしいです", hi: "यह बहुत बढ़िया है", ar: "هذا رائع", ru: "Это потрясающе" } },
+  { id: 57, lessonId: 12, english: "I love this song", translations: { pt: "Eu amo essa música", es: "Me encanta esta canción", fr: "J'adore cette chanson", de: "Ich liebe dieses Lied", zh: "我喜欢这首歌", ja: "この歌が大好きです", hi: "मुझे यह गाना बहुत पसंद है", ar: "أنا أحب هذه الأغنية", ru: "Я люблю эту песню" } },
+  { id: 58, lessonId: 12, english: "Are you kidding me?", translations: { pt: "Você tá brincando comigo?", es: "¿Estás bromeando?", fr: "Tu te moques de moi?", de: "Machst du Witze?", zh: "你在开玩笑吗？", ja: "冗談でしょう？", hi: "क्या तुम मज़ाक कर रहे हो?", ar: "هل تمزح معي؟", ru: "Ты шутишь?" } },
+  { id: 59, lessonId: 12, english: "Let's hang out", translations: { pt: "Vamos dar um rolê", es: "Vamos a pasar el rato", fr: "Sortons", de: "Lass uns abhängen", zh: "我们出去玩吧", ja: "遊びに行こう", hi: "चलो बाहर चलते हैं", ar: "دعنا نخرج", ru: "Давай потусуемся" } },
+  { id: 60, lessonId: 12, english: "What a plot twist", translations: { pt: "Que reviravolta", es: "Qué giro inesperado", fr: "Quel rebondissement", de: "Was für eine Wendung", zh: "多大的转折", ja: "なんてどんでん返し", hi: "क्या कहानी में मोड़ है", ar: "يا لها من مفاجأة", ru: "Какой поворот сюжета" } },
+
+  // Level 13: Travel advanced
+  { id: 61, lessonId: 13, english: "Where is my luggage?", translations: { pt: "Onde está minha bagagem?", es: "¿Dónde está mi equipaje?", fr: "Où sont mes bagages?", de: "Wo ist mein Gepäck?", zh: "我的行李在哪里？", ja: "私の荷物はどこですか？", hi: "मेरा सामान कहाँ है?", ar: "أين أمتعتي؟", ru: "Где мой багаж?" } },
+  { id: 62, lessonId: 13, english: "I missed my flight", translations: { pt: "Eu perdi meu voo", es: "Perdí mi vuelo", fr: "J'ai raté mon vol", de: "Ich habe meinen Flug verpasst", zh: "我错过了航班", ja: "フライトに乗り遅れました", hi: "मेरी उड़ान छूट गई", ar: "فاتتني رحلتي", ru: "Я опоздал на рейс" } },
+  { id: 63, lessonId: 13, english: "Can I see your passport?", translations: { pt: "Posso ver seu passaporte?", es: "¿Puedo ver tu pasaporte?", fr: "Puis-je voir votre passeport?", de: "Kann ich Ihren Pass sehen?", zh: "能看看你的护照吗？", ja: "パスポートを見せていただけますか？", hi: "क्या मैं आपका पासपोर्ट देख सकता हूँ?", ar: "هل يمكنني رؤية جواز سفرك؟", ru: "Можно посмотреть ваш паспорт?" } },
+  { id: 64, lessonId: 13, english: "I have nothing to declare", translations: { pt: "Não tenho nada a declarar", es: "No tengo nada que declarar", fr: "Je n'ai rien à déclarer", de: "Ich habe nichts zu verzollen", zh: "我没有什么要申报的", ja: "申告するものはありません", hi: "मेरे पास घोषित करने के लिए कुछ नहीं है", ar: "ليس لدي ما أصرح به", ru: "Мне нечего декларировать" } },
+  { id: 65, lessonId: 13, english: "Call an ambulance", translations: { pt: "Chame uma ambulância", es: "Llama a una ambulancia", fr: "Appelez une ambulance", de: "Rufen Sie einen Krankenwagen", zh: "叫救护车", ja: "救急車を呼んでください", hi: "एम्बुलेंस बुलाओ", ar: "اتصل بسيارة إسعاف", ru: "Вызовите скорую" } },
+
+  // Level 14: Daily Life
+  { id: 66, lessonId: 14, english: "I need to sleep", translations: { pt: "Eu preciso dormir", es: "Necesito dormir", fr: "J'ai besoin de dormir", de: "Ich muss schlafen", zh: "我需要睡觉", ja: "寝る必要があります", hi: "मुझे सोने की जरूरत है", ar: "أحتاج إلى النوم", ru: "Мне нужно поспать" } },
+  { id: 67, lessonId: 14, english: "What are you doing?", translations: { pt: "O que você está fazendo?", es: "¿Qué estás haciendo?", fr: "Que fais-tu?", de: "Was machst du?", zh: "你在做什么？", ja: "何をしていますか？", hi: "तुम क्या कर रहे हो?", ar: "ماذا تفعل؟", ru: "Что ты делаешь?" } },
+  { id: 68, lessonId: 14, english: "It is raining", translations: { pt: "Está chovendo", es: "Está lloviendo", fr: "Il pleut", de: "Es regnet", zh: "下雨了", ja: "雨が降っています", hi: "बारिश हो रही है", ar: "إنها تمطر", ru: "Идет дождь" } },
+  { id: 69, lessonId: 14, english: "I am busy right now", translations: { pt: "Estou ocupado agora", es: "Estoy ocupado ahora", fr: "Je suis occupé en ce moment", de: "Ich bin gerade beschäftigt", zh: "我现在很忙", ja: "今は忙しいです", hi: "मैं अभी व्यस्त हूँ", ar: "أنا مشغول الآن", ru: "Я сейчас занят" } },
+  { id: 70, lessonId: 14, english: "See you later", translations: { pt: "Até mais tarde", es: "Hasta luego", fr: "À plus tard", de: "Bis später", zh: "回头见", ja: "また後で", hi: "बाद में मिलते हैं", ar: "أراك لاحقاً", ru: "Увидимся позже" } },
+
+  // Level 15: Advanced General
+  { id: 71, lessonId: 15, english: "It depends", translations: { pt: "Depende", es: "Depende", fr: "Ça dépend", de: "Es kommt darauf an", zh: "看情况", ja: "状況によります", hi: "यह निर्भर करता है", ar: "ذلك يعتمد", ru: "Это зависит" } },
+  { id: 72, lessonId: 15, english: "Make yourself at home", translations: { pt: "Sinta-se em casa", es: "Siéntete como en casa", fr: "Faites comme chez vous", de: "Fühlen Sie sich wie zu Hause", zh: "当自己家一样", ja: "くつろいでください", hi: "इसे अपना ही घर समझें", ar: "اعتبر البيت بيتك", ru: "Чувствуйте себя как дома" } },
+  { id: 73, lessonId: 15, english: "Never mind", translations: { pt: "Deixa pra lá", es: "No importa", fr: "Tant pis / Laisse tomber", de: "Schon gut / Vergiss es", zh: "没关系", ja: "気にしないで", hi: "कोई बात नहीं", ar: "لا عليك", ru: "Неважно" } },
+  { id: 74, lessonId: 15, english: "Take your time", translations: { pt: "Leve o tempo que precisar", es: "Tómate tu tiempo", fr: "Prends ton temps", de: "Lass dir Zeit", zh: "慢慢来", ja: "ゆっくりどうぞ", hi: "अपना समय लें", ar: "خذ وقتك", ru: "Не торопитесь" } },
+  { id: 75, lessonId: 15, english: "I have no idea", translations: { pt: "Eu não faço ideia", es: "No tengo idea", fr: "Je n'en ai aucune idée", de: "Ich habe keine Ahnung", zh: "我不知道", ja: "さっぱりわかりません", hi: "मुझे कोई विचार नहीं है", ar: "ليس لدي أي فكرة", ru: "Понятия не имею" } }
 ];
