@@ -101,11 +101,9 @@ function App() {
           unlockedLessonId={progress.unlockedLessonId}
           streak={progress.streak}
           xp={progress.xp}
-          nativeLang={progress.nativeLang}
           goal={progress.goal}
           theme={theme}
           onToggleTheme={toggleTheme}
-          onSetNativeLang={setNativeLang}
           onStartLesson={handleStartLesson}
           onOpenSettings={() => navigateWithTransition('settings', null, 800)}
         />

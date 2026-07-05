@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type { Scenario, DialogueOption } from '../data/levelScenarios';
 import { X, AlertCircle, CheckCircle2, Mic, MicOff, SkipForward, Volume2, Flame, Star } from 'lucide-react';
 import { useSpeech } from '../hooks/useSpeech';
-import './SurvivalGame.css'; // Reusing the CSS styles
+import './SurvivalGame.css'; 
 
 interface ScenarioViewProps {
   scenario: Scenario;
@@ -23,13 +23,13 @@ export function ScenarioView({ scenario, progressPercent, levelTitle, streak, xp
   const { isListening, transcript, startListening, stopListening, setTranscript } = useSpeech();
 
   useEffect(() => {
-    // Reset state when scenario changes
+    
     setSelectedOption(null);
     setShowFeedback(false);
     setFeedbackType(null);
     setTranscript('');
 
-    // Auto-play NPC dialogue
+    
     const u = new SpeechSynthesisUtterance(scenario.npcDialogue);
     u.lang = 'en-US';
     setTimeout(() => window.speechSynthesis.speak(u), 400);

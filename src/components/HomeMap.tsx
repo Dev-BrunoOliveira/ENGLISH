@@ -1,22 +1,19 @@
 import React, { useEffect } from 'react';
 import { getLevelsForGoal } from '../data/levelScenarios';
 import { BookOpen, Lock, Flame, Star, Settings as SettingsIcon, Sun, Moon } from 'lucide-react';
-import { availableLanguages } from '../data/phrases';
 
 interface HomeMapProps {
   unlockedLessonId: number;
   streak: number;
   xp: number;
-  nativeLang: string;
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
-  onSetNativeLang: (lang: string) => void;
   onStartLesson: (id: number) => void;
   onOpenSettings: () => void;
   goal?: 'work' | 'travel' | 'entertainment' | 'study' | null;
 }
 
-export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, theme, onToggleTheme, goal, onSetNativeLang, onStartLesson, onOpenSettings }) => {
+export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, theme, onToggleTheme, goal, onStartLesson, onOpenSettings }) => {
   const levels = getLevelsForGoal(goal);
 
   // Calculate Rank based on XP
