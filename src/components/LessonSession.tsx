@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { top1000Levels, type DialogueOption } from '../data/levelScenarios';
 import { ScenarioView } from './ScenarioView';
 import { Heart } from 'lucide-react';
+import { playSuccessSound } from '../utils/audio';
 
 interface LessonSessionProps {
   lessonId: number;
@@ -40,6 +41,8 @@ export const LessonSession: React.FC<LessonSessionProps> = ({ lessonId, nativeLa
 
   const handleOptionSelect = (isCorrect: boolean, _option?: DialogueOption) => {
     if (isCorrect) {
+      playSuccessSound(); // Dispara o som sintético WebAudio!
+      
       if (currentScenarioIndex + 1 >= levelData.scenarios.length) {
         setIsFinished(true);
       } else {
