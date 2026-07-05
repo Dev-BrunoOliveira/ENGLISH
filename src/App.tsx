@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useProgress } from './hooks/useProgress';
 import { useAuth } from './hooks/useAuth';
 import { HomeMap } from './components/HomeMap';
 import { LessonSession } from './components/LessonSession';
 import { Settings } from './components/Settings';
 import { Auth } from './components/Auth';
+import { SurvivalGame } from './components/SurvivalGame';
 
 function App() {
   const { user, login, signup, logout } = useAuth();
   const { progress, setNativeLang, completeLesson, resetProgress } = useProgress();
-  const [view, setView] = useState<'home' | 'lesson' | 'settings'>('home');
+  const [view, setView] = useState<'home' | 'lesson' | 'settings' | 'survival'>('home');
   const [activeLessonId, setActiveLessonId] = useState<number | null>(null);
 
   // If there is no authenticated user, only show the Auth component
@@ -42,7 +43,10 @@ function App() {
           unlockedLessonId={progress.unlockedLessonId}
           streak={progress.streak}
           xp={progress.xp}
+          nativeLang={progress.nativeLang}
+          onSetNativeLang={setNativeLang}
           onStartLesson={handleStartLesson}
+          onStartSurvivalGame={() => setView('survival')}
           onOpenSettings={() => setView('settings')}
         />
       )}
@@ -53,6 +57,17 @@ function App() {
           nativeLang={progress.nativeLang}
           onComplete={handleCompleteLesson}
           onQuit={handleQuitLesson}
+        />
+      )}
+
+      {view === 'survival' && (
+        <SurvivalGame 
+          onQuit={() => setView('home')}
+          onWin={(remainingTime) => {
+            // Give XP based on time remaining!
+            completeLesson(999, Math.floor(remainingTime / 2)); 
+            setView('home');
+          }}
         />
       )}
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Search } from 'lucide-react';
-import { categories } from '../data/phrases';
+
+const categories: string[] = []; // removed unused import
 
 interface FiltersProps {
   searchQuery: string;
@@ -48,7 +49,7 @@ export const Filters: React.FC<FiltersProps> = ({
           }}
         >
           <option value="All">All Categories</option>
-          {categories.map(c => <option key={c} value={c}>{c}</option>)}
+          {categories.map((c: string) => <option key={c} value={c}>{c}</option>)}
         </select>
       </div>
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useGameEngine } from '../hooks/useGameEngine';
-import { Heart, X, CheckCircle, Volume2 } from 'lucide-react';
+import { Heart, X, Volume2 } from 'lucide-react';
 
 interface LessonSessionProps {
   lessonId: number;

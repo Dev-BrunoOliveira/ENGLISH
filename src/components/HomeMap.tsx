@@ -9,10 +9,11 @@ interface HomeMapProps {
   nativeLang: string;
   onSetNativeLang: (lang: string) => void;
   onStartLesson: (id: number) => void;
+  onStartSurvivalGame: () => void;
   onOpenSettings: () => void;
 }
 
-export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, nativeLang, onSetNativeLang, onStartLesson, onOpenSettings }) => {
+export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, nativeLang, onSetNativeLang, onStartLesson, onStartSurvivalGame, onOpenSettings }) => {
   return (
     <div style={{ width: '100%', maxWidth: '600px', margin: '0 auto', padding: '1rem' }}>
       {/* Top Bar */}
@@ -49,10 +50,46 @@ export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, 
         </div>
       </div>
 
-      <h1 style={{ textAlign: 'center', marginBottom: '3rem', fontSize: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
+      <h1 style={{ textAlign: 'center', marginBottom: '1rem', fontSize: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
         <img src="/mascot.png" alt="Mascot" style={{ width: '100px', height: '100px', objectFit: 'contain', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))' }} />
         Learning Path
       </h1>
+
+      {/* Survival Game Banner */}
+      <div style={{
+        background: 'linear-gradient(135deg, #ef4444, #b91c1c)',
+        borderRadius: '16px',
+        padding: '2rem',
+        textAlign: 'center',
+        color: 'white',
+        marginBottom: '3rem',
+        boxShadow: '0 10px 25px rgba(239, 68, 68, 0.4)',
+        border: '2px solid rgba(255,255,255,0.2)'
+      }}>
+        <h2 style={{ margin: '0 0 10px 0', fontSize: '1.8rem' }}>3 Hours to Flight! ✈️</h2>
+        <p style={{ margin: '0 0 20px 0', fontSize: '1rem', opacity: 0.9 }}>
+          You lost your wallet. Your flight leaves in 3 hours. Can you survive and make it to the airport using only English?
+        </p>
+        <button 
+          onClick={onStartSurvivalGame}
+          style={{
+            background: 'white',
+            color: '#b91c1c',
+            border: 'none',
+            padding: '12px 24px',
+            fontSize: '1.2rem',
+            fontWeight: 'bold',
+            borderRadius: '999px',
+            cursor: 'pointer',
+            boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+            transition: 'transform 0.2s'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          Play Survival Mode
+        </button>
+      </div>
 
       {/* Path */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem' }}>

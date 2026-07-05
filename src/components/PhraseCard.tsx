@@ -102,7 +102,7 @@ export const PhraseCard: React.FC<PhraseCardProps> = ({ phrase, showNative, isLe
 
       <div style={{ marginTop: '2.5rem', width: '100%', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <div style={{ fontSize: '0.875rem', color: 'var(--accent-primary)', fontWeight: 600, marginBottom: '0.5rem' }}>
-          {phrase.category}
+          {/* phrase.category was removed */}
         </div>
         
         <h2 className="text-gradient" style={{ fontSize: '2.5rem', marginBottom: '1.5rem', wordBreak: 'break-word' }}>
@@ -112,7 +112,7 @@ export const PhraseCard: React.FC<PhraseCardProps> = ({ phrase, showNative, isLe
         <div style={{ minHeight: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {(showNative || isFlipped) ? (
             <p className="animate-fade-in" style={{ fontSize: '1.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
-              {phrase.native}
+              {phrase.translations['pt'] || phrase.english}
             </p>
           ) : (
             <p className="animate-pulse" style={{ fontSize: '1rem', color: 'var(--text-secondary)', opacity: 0.6 }}>
