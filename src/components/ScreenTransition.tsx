@@ -17,10 +17,22 @@ export const ScreenTransition: React.FC<ScreenTransitionProps> = ({ isVisible })
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      animation: 'fadeInOut 1.5s ease-in-out', // Assuming it lasts 1.5s
+      animation: 'fadeInOut 1.5s ease-in-out', 
     }}>
-      {/* Increased size slightly and removed the circle crop so the character fits better */}
-      <div style={{ width: '200px', height: '200px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div style={{
+        width: '220px', 
+        height: '340px', 
+        position: 'relative', 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        // Borda de Janela de Avião Cartoon
+        border: '14px solid #ffffff',
+        borderRadius: '120px', // Cantos hiper arredondados formando a pílula da janela
+        boxShadow: '12px 12px 0px rgba(0,0,0,0.5), inset 6px 6px 0px rgba(0,0,0,0.3)', // Sombra grossa de cartoon 2D
+        overflow: 'hidden',
+        backgroundColor: '#ccc'
+      }}>
         <video 
           src="/loading.mp4" 
           autoPlay 
@@ -30,20 +42,29 @@ export const ScreenTransition: React.FC<ScreenTransitionProps> = ({ isVisible })
           style={{ 
             width: '100%', 
             height: '100%', 
-            objectFit: 'contain',
-            // Usa uma máscara radial para apagar as bordas duras do quadriculado
-            // criando um efeito de "holofote" focado apenas no centro onde está o personagem
-            WebkitMaskImage: 'radial-gradient(circle, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 65%)',
-            maskImage: 'radial-gradient(circle, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 65%)'
+            objectFit: 'cover' // O vídeo preenche a moldura inteira!
           }}
         />
-
       </div>
-      <h2 className="animate-pulse" style={{ marginTop: '20px', color: 'var(--text-secondary)', fontSize: '1.2rem' }}>
-        Loading...
+      <h2 style={{ marginTop: '8px', color: '#f97316', fontSize: '1.2rem', display: 'flex', alignItems: 'center' }}>
+        <span className="animate-pulse">Carregando</span>
+        <span className="animated-dots"></span>
       </h2>
       <style>
         {`
+          @keyframes dots {
+            0%, 20% { content: ''; }
+            30%, 50% { content: '.'; }
+            60%, 80% { content: '..'; }
+            90%, 100% { content: '...'; }
+          }
+          .animated-dots::after {
+            content: '';
+            animation: dots 1.5s infinite;
+            display: inline-block;
+            width: 1em; /* keeps space so text doesn't jump */
+            text-align: left;
+          }
           @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
