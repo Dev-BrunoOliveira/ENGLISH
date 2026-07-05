@@ -16,8 +16,6 @@ function App() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
-  const [transitionDuration, setTransitionDuration] = useState(1500);
-
   useEffect(() => {
     if (theme === 'light') {
       document.documentElement.classList.add('light-mode');
@@ -33,7 +31,6 @@ function App() {
     lessonId: number | null = null,
     duration: number = 1500
   ) => {
-    setTransitionDuration(duration);
     setIsTransitioning(true);
     
     // Altera a tela na metade da transição (quando o loading está 100% visível)
@@ -57,7 +54,7 @@ function App() {
         navigateWithTransition('lesson', progress.unlockedLessonId || 1, 1500);
       }
     }
-  }, [user]); // Rodamos apenas quando o estado 'user' muda (no momento do login)
+  }, [user]);
 
   const handleSelectGoal = (goalId: 'work' | 'travel' | 'entertainment' | 'study') => {
     setUserGoal(goalId);
@@ -134,7 +131,7 @@ function App() {
         />
       )}
 
-      <ScreenTransition isVisible={isTransitioning} duration={transitionDuration} />
+      <ScreenTransition isVisible={isTransitioning} />
     </div>
   );
 }
