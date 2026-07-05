@@ -8,9 +8,10 @@
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
-  color: white;
+  color: var(--text-primary);
+  background: var(--card-bg-gradient);
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  transition: background-color 0.5s ease;
+  transition: background 0.5s ease;
 }
 
 .hud {
@@ -128,23 +129,24 @@
 }
 
 .option-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: var(--glass-bg);
+  border: 2px solid var(--glass-border);
   border-radius: 12px;
   padding: 16px 20px;
   font-size: 1.1rem;
-  color: white;
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
   font-weight: 500;
   backdrop-filter: blur(4px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
 .option-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4);
   transform: translateY(-2px);
+  border-color: var(--accent-primary);
+  box-shadow: 0 6px 12px var(--glass-shadow);
 }
 
 .option-btn.correct {
@@ -163,24 +165,53 @@
 
 .feedback-overlay {
   position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  margin-bottom: 16px;
+  z-index: 10;
   display: flex;
   justify-content: center;
-  align-items: center;
-  z-index: 10;
-  animation: fadeIn 0.3s ease;
+  pointer-events: none; /* Allows clicks to pass through if needed */
 }
 
 .feedback-card {
-  background: white;
-  padding: 40px;
-  border-radius: 20px;
-  text-align: center;
-  max-width: 400px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(12px);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  width: auto;
+  max-width: 90%;
+}
+
+.feedback-overlay.success .feedback-card {
+  border-left: 2px solid #22c55e;
+}
+
+.feedback-overlay.error .feedback-card {
+  border-left: 2px solid #ef4444;
+}
+
+.feedback-card-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feedback-card-content {
+  text-align: left;
+}
+
+.feedback-card h2 {
+  margin: 0 0 2px 0;
+  font-size: 0.95rem;
 }
 
 .feedback-overlay.success .feedback-card h2 {
@@ -191,15 +222,9 @@
   color: #ef4444;
 }
 
-.feedback-card h2 {
-  margin: 20px 0 10px 0;
-  font-size: 2rem;
-}
-
 .feedback-card p {
-  color: #4b5563;
-  font-size: 1.1rem;
-  line-height: 1.5;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
   margin: 0;
 }
 
@@ -248,8 +273,8 @@
   height: 100%;
   min-height: 80vh;
   border-radius: 16px;
-  background: #1e293b;
-  color: white;
+  background: var(--card-bg-gradient);
+  color: var(--text-primary);
   text-align: center;
   padding: 40px;
 }

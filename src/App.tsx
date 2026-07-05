@@ -14,8 +14,19 @@ function App() {
   const [view, setView] = useState<'home' | 'lesson' | 'settings' | 'onboarding'>('home');
   const [activeLessonId, setActiveLessonId] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
   const [transitionDuration, setTransitionDuration] = useState(1500);
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('light-mode');
+    } else {
+      document.documentElement.classList.remove('light-mode');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
   const navigateWithTransition = (
     newView: 'home' | 'lesson' | 'settings' | 'onboarding',
@@ -95,6 +106,8 @@ function App() {
           xp={progress.xp}
           nativeLang={progress.nativeLang}
           goal={progress.goal}
+          theme={theme}
+          onToggleTheme={toggleTheme}
           onSetNativeLang={setNativeLang}
           onStartLesson={handleStartLesson}
           onOpenSettings={() => navigateWithTransition('settings', null, 800)}

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { getLevelsForGoal } from '../data/levelScenarios';
-import { BookOpen, Lock, Flame, Star, Settings as SettingsIcon } from 'lucide-react';
+import { BookOpen, Lock, Flame, Star, Settings as SettingsIcon, Sun, Moon } from 'lucide-react';
 import { availableLanguages } from '../data/phrases';
 
 interface HomeMapProps {
@@ -8,13 +8,15 @@ interface HomeMapProps {
   streak: number;
   xp: number;
   nativeLang: string;
+  theme: 'light' | 'dark';
+  onToggleTheme: () => void;
   onSetNativeLang: (lang: string) => void;
   onStartLesson: (id: number) => void;
   onOpenSettings: () => void;
   goal?: 'work' | 'travel' | 'entertainment' | 'study' | null;
 }
 
-export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, nativeLang, goal, onSetNativeLang, onStartLesson, onOpenSettings }) => {
+export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, theme, onToggleTheme, goal, onSetNativeLang, onStartLesson, onOpenSettings }) => {
   const levels = getLevelsForGoal(goal);
 
   // Calculate Rank based on XP
@@ -45,21 +47,14 @@ export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, 
         </div>
         
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <select 
-            value={nativeLang}
-            onChange={(e) => onSetNativeLang(e.target.value)}
-            style={{ 
-              padding: '8px 12px', 
-              borderRadius: '8px', border: '1px solid var(--glass-border)',
-              background: 'rgba(0,0,0,0.2)', color: 'white',
-              outline: 'none', fontFamily: 'inherit', fontSize: '0.875rem',
-              cursor: 'pointer'
-            }}
+          <button 
+            className="btn-icon btn-glass" 
+            onClick={onToggleTheme} 
+            title="Toggle Theme" 
+            style={{ padding: '8px', color: theme === 'light' ? '#f59e0b' : 'white' }}
           >
-            {availableLanguages.map(lang => (
-              <option key={lang.code} value={lang.code} style={{ color: 'black' }}>{lang.name}</option>
-            ))}
-          </select>
+            {theme === 'light' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
 
           <button className="btn-icon btn-glass" onClick={onOpenSettings} title="Settings" style={{ padding: '8px' }}>
             <SettingsIcon size={20} />

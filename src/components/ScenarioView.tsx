@@ -71,15 +71,6 @@ export function ScenarioView({ scenario, progressPercent, levelTitle, streak, xp
     triggerFeedback(isCorrect, isCorrect ? correctOption : undefined);
   };
 
-  const getBgColor = (bgClass: string) => {
-    if (bgClass.includes('slate')) return '#1e293b';
-    if (bgClass.includes('orange')) return '#c2410c';
-    if (bgClass.includes('blue')) return '#1e3a8a';
-    if (bgClass.includes('gray')) return '#374151';
-    if (bgClass.includes('red')) return '#7f1d1d';
-    return '#1e293b';
-  };
-
   let rank = "Novice";
   if (xp >= 500) rank = "Explorer";
   if (xp >= 1500) rank = "Linguist";
@@ -87,32 +78,32 @@ export function ScenarioView({ scenario, progressPercent, levelTitle, streak, xp
   if (xp >= 5000) rank = "Legend";
 
   return (
-    <div className="scenario-container" style={{ backgroundColor: getBgColor(scenario.backgroundClass) }}>
+    <div className="scenario-container">
       
       {/* Top Bar / HUD */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.9)', whiteSpace: 'nowrap' }}>
+          <span style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
             {levelTitle}
           </span>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: 'rgba(0,0,0,0.4)', padding: '6px 12px', borderRadius: '999px', fontSize: '0.9rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#f59e0b', fontWeight: 'bold' }}>
-              <Flame size={16} fill={streak > 0 ? "#f59e0b" : "none"} /> {streak}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--accent-primary)', fontWeight: 'bold' }}>
+              <Flame size={16} fill={streak > 0 ? "var(--accent-primary)" : "none"} /> {streak}
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#3b82f6', fontWeight: 'bold' }}>
-              <Star size={16} fill={xp > 0 ? "#3b82f6" : "none"} /> {xp} XP
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--accent-primary)', fontWeight: 'bold' }}>
+              <Star size={16} fill={xp > 0 ? "var(--accent-primary)" : "none"} /> {xp} XP
             </div>
             <span style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', color: 'white', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 'bold' }}>
               {rank}
             </span>
           </div>
-          <button className="btn-icon" onClick={onQuit} style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', padding: 0 }}>
+          <button className="btn-icon" onClick={onQuit} style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: 0 }}>
             <X size={28} />
           </button>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div style={{ flex: 1, height: '16px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', overflow: 'hidden' }}>
-            <div style={{ width: `${progressPercent}%`, height: '100%', background: 'linear-gradient(90deg, #22c55e, #4ade80)', transition: 'width 0.5s ease-out', borderRadius: '8px' }} />
+            <div style={{ width: `${progressPercent}%`, height: '100%', background: 'linear-gradient(90deg, var(--accent-secondary), var(--accent-primary))', transition: 'width 0.5s ease-out', borderRadius: '8px' }} />
           </div>
         </div>
       </div>
@@ -140,7 +131,7 @@ export function ScenarioView({ scenario, progressPercent, levelTitle, streak, xp
                     u.lang = 'en-US';
                     window.speechSynthesis.speak(u);
                   }}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#4f46e5' }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)' }}
                >
                  <Volume2 size={20} />
                </button>
@@ -150,7 +141,31 @@ export function ScenarioView({ scenario, progressPercent, levelTitle, streak, xp
       </div>
 
       {/* Player Options or Microphone */}
-      <div className="options-area" style={{ marginTop: 'auto' }}>
+      <div className="options-area" style={{ marginTop: 'auto', position: 'relative' }}>
+        
+        {/* Feedback Overlay */}
+        {showFeedback && (
+          <div className={`feedback-overlay ${feedbackType}`}>
+            <div className="feedback-card">
+              <div className="feedback-card-icon">
+                {feedbackType === 'success' ? (
+                  <CheckCircle2 size={18} color="#4ade80" />
+                ) : (
+                  <AlertCircle size={18} color="#f87171" />
+                )}
+              </div>
+              <div className="feedback-card-content" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <strong style={{ color: feedbackType === 'success' ? '#22c55e' : '#ef4444', fontSize: '0.9rem' }}>
+                  {feedbackType === 'success' ? 'Correct!' : 'Wrong!'}
+                </strong>
+                <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+                  {selectedOption ? selectedOption.feedback : "Try again!"}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
         {scenario.requiresSpeaking ? (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%' }}>
             
@@ -166,7 +181,7 @@ export function ScenarioView({ scenario, progressPercent, levelTitle, streak, xp
             {/* Main Action Row */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px', width: '100%', marginTop: '0.5rem' }}>
               
-              <button onClick={onDisableMic} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <button onClick={onDisableMic} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', transition: 'all 0.2s' }}>
                 <MicOff size={24} />
                 <span style={{ fontSize: '0.75rem', marginTop: '6px' }}>Can't speak</span>
               </button>
@@ -190,12 +205,12 @@ export function ScenarioView({ scenario, progressPercent, levelTitle, streak, xp
                 >
                   <Mic size={36} />
                 </button>
-                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', margin: 0, marginTop: '12px' }}>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0, marginTop: '12px' }}>
                   {isListening ? "Listening..." : "Hold to speak"}
                 </p>
               </div>
 
-              <button onClick={() => onOptionSelect(true)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <button onClick={() => onOptionSelect(true)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', transition: 'all 0.2s' }}>
                 <SkipForward size={24} />
                 <span style={{ fontSize: '0.75rem', marginTop: '6px' }}>Skip</span>
               </button>
@@ -234,21 +249,6 @@ export function ScenarioView({ scenario, progressPercent, levelTitle, streak, xp
           ))
         )}
       </div>
-
-      {/* Feedback Overlay */}
-      {showFeedback && (
-        <div className={`feedback-overlay ${feedbackType}`}>
-          <div className="feedback-card">
-            {feedbackType === 'success' ? (
-              <CheckCircle2 size={48} color="#22c55e" />
-            ) : (
-              <AlertCircle size={48} color="#ef4444" />
-            )}
-            <h2>{feedbackType === 'success' ? 'Correct!' : 'Wrong!'}</h2>
-            <p>{selectedOption ? selectedOption.feedback : "Try again!"}</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

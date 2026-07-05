@@ -27,12 +27,12 @@ export const ScreenTransition: React.FC<ScreenTransitionProps> = ({ isVisible, d
         display: 'flex', 
         justifyContent: 'center', 
         alignItems: 'center',
-        // Borda de Janela de Avião Cartoon
-        border: '14px solid #ffffff',
-        borderRadius: '120px', // Cantos hiper arredondados formando a pílula da janela
-        boxShadow: '12px 12px 0px rgba(0,0,0,0.5), inset 6px 6px 0px rgba(0,0,0,0.3)', // Sombra grossa de cartoon 2D
+        // Borda de Janela
+        border: '4px solid var(--glass-border)',
+        borderRadius: '120px',
+        boxShadow: 'var(--glass-shadow)',
         overflow: 'hidden',
-        backgroundColor: '#ccc'
+        backgroundColor: 'var(--glass-bg)'
       }}>
         <video 
           src="/loading.mp4" 

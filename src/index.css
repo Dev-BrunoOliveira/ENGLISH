@@ -19,6 +19,22 @@
   );
 }
 
+.light-mode {
+  --bg-color: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #4b5563;
+  --accent-primary: #ea580c;
+  --accent-secondary: #f97316;
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(234, 88, 12, 0.3);
+  --glass-shadow: 0 8px 32px 0 rgba(234, 88, 12, 0.15);
+  --card-bg-gradient: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(240, 240, 240, 0.9)
+  );
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -98,12 +114,12 @@ h6 {
     var(--accent-secondary)
   );
   color: white;
-  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.4);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.6);
 }
 
 .btn-primary:active {
