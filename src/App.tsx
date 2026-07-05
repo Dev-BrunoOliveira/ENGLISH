@@ -1,21 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useProgress } from './hooks/useProgress';
 import { useAuth } from './hooks/useAuth';
 import { HomeMap } from './components/HomeMap';
 import { LessonSession } from './components/LessonSession';
 import { Settings } from './components/Settings';
 import { Auth } from './components/Auth';
-import { SurvivalGame } from './components/SurvivalGame';
+import { ScreenTransition } from './components/ScreenTransition';
 
 function App() {
   const { user, login, signup, logout } = useAuth();
   const { progress, setNativeLang, completeLesson, resetProgress } = useProgress();
-  const [view, setView] = useState<'home' | 'lesson' | 'settings' | 'survival'>('home');
+  const [view, setView] = useState<'home' | 'lesson' | 'settings'>('home');
   const [activeLessonId, setActiveLessonId] = useState<number | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // If there is no authenticated user, only show the Auth component
+ 
+  useEffect(() => {
+    if (user) {
+      setIsTransitioning(true);
+      const timer = setTimeout(() => setIsTransitioning(false), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [view, user]);
+
+  
   if (!user) {
-    return <Auth onLogin={login} onSignup={signup} />;
+    return (
+      <>
+        <Auth onLogin={login} onSignup={signup} />
+        <ScreenTransition isVisible={isTransitioning} />
+      </>
+    );
   }
 
   const handleStartLesson = (id: number) => {
@@ -46,7 +61,6 @@ function App() {
           nativeLang={progress.nativeLang}
           onSetNativeLang={setNativeLang}
           onStartLesson={handleStartLesson}
-          onStartSurvivalGame={() => setView('survival')}
           onOpenSettings={() => setView('settings')}
         />
       )}
@@ -60,17 +74,6 @@ function App() {
         />
       )}
 
-      {view === 'survival' && (
-        <SurvivalGame 
-          onQuit={() => setView('home')}
-          onWin={(remainingTime) => {
-            // Give XP based on time remaining!
-            completeLesson(999, Math.floor(remainingTime / 2)); 
-            setView('home');
-          }}
-        />
-      )}
-
       {view === 'settings' && (
         <Settings 
           onResetProgress={resetProgress}
@@ -78,6 +81,8 @@ function App() {
           onClose={() => setView('home')}
         />
       )}
+
+      <ScreenTransition isVisible={isTransitioning} />
     </div>
   );
 }

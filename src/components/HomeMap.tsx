@@ -1,6 +1,7 @@
 import React from 'react';
-import { lessons, availableLanguages } from '../data/phrases';
+import { top1000Levels } from '../data/levelScenarios';
 import { BookOpen, Lock, Flame, Star, Settings as SettingsIcon } from 'lucide-react';
+import { availableLanguages } from '../data/phrases';
 
 interface HomeMapProps {
   unlockedLessonId: number;
@@ -9,11 +10,10 @@ interface HomeMapProps {
   nativeLang: string;
   onSetNativeLang: (lang: string) => void;
   onStartLesson: (id: number) => void;
-  onStartSurvivalGame: () => void;
   onOpenSettings: () => void;
 }
 
-export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, nativeLang, onSetNativeLang, onStartLesson, onStartSurvivalGame, onOpenSettings }) => {
+export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, nativeLang, onSetNativeLang, onStartLesson, onOpenSettings }) => {
   return (
     <div style={{ width: '100%', maxWidth: '600px', margin: '0 auto', padding: '1rem' }}>
       {/* Top Bar */}
@@ -50,87 +50,78 @@ export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, 
         </div>
       </div>
 
-      <h1 style={{ textAlign: 'center', marginBottom: '1rem', fontSize: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
-        <img src="/mascot.png" alt="Mascot" style={{ width: '100px', height: '100px', objectFit: 'contain', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))' }} />
-        Learning Path
-      </h1>
-
-      {/* Survival Game Banner */}
-      <div style={{
-        background: 'linear-gradient(135deg, #ef4444, #b91c1c)',
-        borderRadius: '16px',
-        padding: '2rem',
-        textAlign: 'center',
-        color: 'white',
-        marginBottom: '3rem',
-        boxShadow: '0 10px 25px rgba(239, 68, 68, 0.4)',
-        border: '2px solid rgba(255,255,255,0.2)'
-      }}>
-        <h2 style={{ margin: '0 0 10px 0', fontSize: '1.8rem' }}>3 Hours to Flight! ✈️</h2>
-        <p style={{ margin: '0 0 20px 0', fontSize: '1rem', opacity: 0.9 }}>
-          You lost your wallet. Your flight leaves in 3 hours. Can you survive and make it to the airport using only English?
-        </p>
-        <button 
-          onClick={onStartSurvivalGame}
-          style={{
-            background: 'white',
-            color: '#b91c1c',
-            border: 'none',
-            padding: '12px 24px',
-            fontSize: '1.2rem',
-            fontWeight: 'bold',
-            borderRadius: '999px',
-            cursor: 'pointer',
-            boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-            transition: 'transform 0.2s'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-        >
-          Play Survival Mode
-        </button>
+      <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+        <h1 style={{ fontSize: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', margin: 0 }}>
+          <img src="/mascot.png" alt="Mascot" style={{ width: '100px', height: '100px', objectFit: 'contain', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))' }} />
+          The 1000 Phrases
+        </h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginTop: '0.5rem' }}>Master the most spoken phrases in English!</p>
       </div>
 
       {/* Path */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem' }}>
-        {lessons.map((lesson, index) => {
-          const isUnlocked = lesson.id <= unlockedLessonId;
-          const isCurrent = lesson.id === unlockedLessonId;
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3rem', paddingBottom: '4rem' }}>
+        {top1000Levels.slice(0, 20).map((level, index) => {
+          // We only render the first 20 for performance in this UI demo
+          const isUnlocked = level.id <= unlockedLessonId;
+          const isCurrent = level.id === unlockedLessonId;
           
           // Zig-zag pattern
           const offset = index % 2 === 0 ? '-40px' : '40px';
 
           return (
-            <div key={lesson.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', transform: `translateX(${offset})` }}>
+            <div key={level.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', transform: `translateX(${offset})`, position: 'relative' }}>
+              
+              {/* Category Marker if it's the first of its kind */}
+              {index === 0 && <div className="category-label">Beginner</div>}
+              {level.id === 31 && <div className="category-label">Intermediate</div>}
+              {level.id === 71 && <div className="category-label">Advanced</div>}
+
               <button 
-                onClick={() => isUnlocked && onStartLesson(lesson.id)}
+                onClick={() => isUnlocked && onStartLesson(level.id)}
                 style={{
-                  width: '80px', height: '80px',
+                  width: '90px', height: '90px',
                   borderRadius: '50%',
-                  border: 'none',
+                  border: '4px solid',
+                  borderColor: isCurrent ? 'rgba(255,255,255,0.4)' : 'transparent',
                   background: isUnlocked 
                     ? (isCurrent ? 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))' : 'var(--accent-primary)')
                     : 'var(--glass-bg)',
                   color: isUnlocked ? 'white' : 'var(--text-secondary)',
                   display: 'flex', justifyContent: 'center', alignItems: 'center',
                   cursor: isUnlocked ? 'pointer' : 'not-allowed',
-                  boxShadow: isUnlocked ? '0 8px 0 rgba(0,0,0,0.2)' : '0 8px 0 rgba(0,0,0,0.1)',
+                  boxShadow: isUnlocked ? '0 10px 0 rgba(0,0,0,0.2)' : '0 10px 0 rgba(0,0,0,0.1)',
                   transform: isCurrent ? 'scale(1.1)' : 'scale(1)',
-                  transition: 'all 0.2s',
-                  position: 'relative'
+                  transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                  position: 'relative',
+                  marginTop: (level.id === 1 || level.id === 31 || level.id === 71) ? '40px' : '0'
                 }}
                 className={isCurrent ? "animate-pulse" : ""}
               >
-                {isUnlocked ? <BookOpen size={32} /> : <Lock size={32} />}
+                {isUnlocked ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                     <BookOpen size={28} />
+                     <span style={{ fontSize: '1rem', fontWeight: 'bold', marginTop: '2px' }}>{level.id}</span>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                     <Lock size={28} />
+                     <span style={{ fontSize: '1rem', fontWeight: 'bold', marginTop: '2px', opacity: 0.5 }}>{level.id}</span>
+                  </div>
+                )}
               </button>
               
-              <div style={{ marginTop: '1.5rem', textAlign: 'center', background: 'var(--glass-bg)', padding: '12px 16px', borderRadius: '12px', minWidth: '200px' }}>
-                <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{lesson.title}</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{lesson.description}</div>
+              <div style={{ marginTop: '1.5rem', textAlign: 'center', background: 'var(--glass-bg)', padding: '12px 16px', borderRadius: '12px', minWidth: '220px', border: '1px solid var(--glass-border)' }}>
+                <div style={{ fontWeight: 'bold', marginBottom: '4px', fontSize: '1.1rem' }}>{level.title}</div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{level.description}</div>
               </div>
             </div>
           );
         })}
+        
+        {/* Load more placeholder */}
+        <div style={{ textAlign: 'center', color: 'var(--text-secondary)', padding: '2rem' }}>
+           ... 80 more levels to master ...
+        </div>
       </div>
     </div>
   );
