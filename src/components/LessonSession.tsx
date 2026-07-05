@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { getLevelsForGoal, type DialogueOption } from '../data/levelScenarios';
 import { ScenarioView } from './ScenarioView';
-import { Heart } from 'lucide-react';
 import { playSuccessSound } from '../utils/audio';
 
 interface LessonSessionProps {
