@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react';
 import type { Scenario, DialogueOption } from '../data/levelScenarios';
-import { Heart, X, AlertCircle, CheckCircle2, Mic, Volume2 } from 'lucide-react';
+import { X, AlertCircle, CheckCircle2, Mic, MicOff, SkipForward, Volume2, Flame, Star } from 'lucide-react';
 import { useSpeech } from '../hooks/useSpeech';
 import './SurvivalGame.css'; // Reusing the CSS styles
 
 interface ScenarioViewProps {
   scenario: Scenario;
   progressPercent: number;
+  levelTitle: string;
+  streak: number;
+  xp: number;
   onQuit: () => void;
   onOptionSelect: (isCorrect: boolean, option?: DialogueOption) => void;
   onDisableMic: () => void;
   nativeLang: string;
 }
 
-export function ScenarioView({ scenario, progressPercent, onQuit, onOptionSelect, onDisableMic, nativeLang }: ScenarioViewProps) {
+export function ScenarioView({ scenario, progressPercent, levelTitle, streak, xp, onQuit, onOptionSelect, onDisableMic, nativeLang }: ScenarioViewProps) {
   const [selectedOption, setSelectedOption] = useState<DialogueOption | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackType, setFeedbackType] = useState<'success' | 'error' | null>(null);
@@ -77,16 +80,40 @@ export function ScenarioView({ scenario, progressPercent, onQuit, onOptionSelect
     return '#1e293b';
   };
 
+  let rank = "Novice";
+  if (xp >= 500) rank = "Explorer";
+  if (xp >= 1500) rank = "Linguist";
+  if (xp >= 3000) rank = "Master";
+  if (xp >= 5000) rank = "Legend";
+
   return (
     <div className="scenario-container" style={{ backgroundColor: getBgColor(scenario.backgroundClass) }}>
       
       {/* Top Bar / HUD */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-        <button className="btn-icon" onClick={onQuit} style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer' }}>
-          <X size={28} />
-        </button>
-        <div style={{ flex: 1, height: '16px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', overflow: 'hidden' }}>
-          <div style={{ width: `${progressPercent}%`, height: '100%', background: 'linear-gradient(90deg, #22c55e, #4ade80)', transition: 'width 0.5s ease-out', borderRadius: '8px' }} />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+          <span style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'rgba(255,255,255,0.9)', whiteSpace: 'nowrap' }}>
+            {levelTitle}
+          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: 'rgba(0,0,0,0.4)', padding: '6px 12px', borderRadius: '999px', fontSize: '0.9rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#f59e0b', fontWeight: 'bold' }}>
+              <Flame size={16} fill={streak > 0 ? "#f59e0b" : "none"} /> {streak}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#3b82f6', fontWeight: 'bold' }}>
+              <Star size={16} fill={xp > 0 ? "#3b82f6" : "none"} /> {xp} XP
+            </div>
+            <span style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', color: 'white', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 'bold' }}>
+              {rank}
+            </span>
+          </div>
+          <button className="btn-icon" onClick={onQuit} style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', padding: 0 }}>
+            <X size={28} />
+          </button>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{ flex: 1, height: '16px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', overflow: 'hidden' }}>
+            <div style={{ width: `${progressPercent}%`, height: '100%', background: 'linear-gradient(90deg, #22c55e, #4ade80)', transition: 'width 0.5s ease-out', borderRadius: '8px' }} />
+          </div>
         </div>
       </div>
 
@@ -125,36 +152,55 @@ export function ScenarioView({ scenario, progressPercent, onQuit, onOptionSelect
       {/* Player Options or Microphone */}
       <div className="options-area" style={{ marginTop: 'auto' }}>
         {scenario.requiresSpeaking ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', width: '100%' }}>
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%' }}>
+            
+            {/* Suggested Phrases */}
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '0.5rem' }}>
                {scenario.options.map(opt => (
-                 <div key={opt.id} style={{ padding: '12px 20px', background: 'rgba(255,255,255,0.1)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.2)' }}>
+                 <div key={opt.id} style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.1)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.2)', fontSize: '0.95rem' }}>
                     {opt.text}
                  </div>
                ))}
             </div>
             
-            <button 
-              onMouseDown={() => startListening('en-US')}
-              onMouseUp={() => stopListening()}
-              onTouchStart={() => startListening('en-US')}
-              onTouchEnd={() => stopListening()}
-              className={isListening ? "animate-pulse" : ""}
-              style={{
-                width: '100px', height: '100px', borderRadius: '50%',
-                background: isListening ? '#ef4444' : 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',
-                border: '4px solid rgba(255,255,255,0.2)',
-                display: 'flex', justifyContent: 'center', alignItems: 'center',
-                color: 'white', cursor: 'pointer',
-                boxShadow: isListening ? '0 0 30px rgba(239, 68, 68, 0.6)' : '0 10px 25px rgba(0,0,0,0.3)',
-                transition: 'all 0.2s'
-              }}
-            >
-              <Mic size={40} />
-            </button>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem' }}>
-              {isListening ? "Listening..." : "Hold to speak your answer"}
-            </p>
+            {/* Main Action Row */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px', width: '100%', marginTop: '0.5rem' }}>
+              
+              <button onClick={onDisableMic} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', transition: 'all 0.2s' }}>
+                <MicOff size={24} />
+                <span style={{ fontSize: '0.75rem', marginTop: '6px' }}>Can't speak</span>
+              </button>
+
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <button 
+                  onMouseDown={() => startListening('en-US')}
+                  onMouseUp={() => stopListening()}
+                  onTouchStart={() => startListening('en-US')}
+                  onTouchEnd={() => stopListening()}
+                  className={isListening ? "animate-pulse" : ""}
+                  style={{
+                    width: '80px', height: '80px', borderRadius: '50%',
+                    background: isListening ? '#ef4444' : 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',
+                    border: '4px solid rgba(255,255,255,0.2)',
+                    display: 'flex', justifyContent: 'center', alignItems: 'center',
+                    color: 'white', cursor: 'pointer',
+                    boxShadow: isListening ? '0 0 30px rgba(239, 68, 68, 0.6)' : '0 10px 25px rgba(0,0,0,0.3)',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  <Mic size={36} />
+                </button>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', margin: 0, marginTop: '12px' }}>
+                  {isListening ? "Listening..." : "Hold to speak"}
+                </p>
+              </div>
+
+              <button onClick={() => onOptionSelect(true)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', transition: 'all 0.2s' }}>
+                <SkipForward size={24} />
+                <span style={{ fontSize: '0.75rem', marginTop: '6px' }}>Skip</span>
+              </button>
+
+            </div>
             
             {transcript && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -170,22 +216,6 @@ export function ScenarioView({ scenario, progressPercent, onQuit, onOptionSelect
                 </button>
               </div>
             )}
-            
-            {/* Action Buttons */}
-            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-              <button 
-                onClick={onDisableMic} 
-                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'rgba(255,255,255,0.7)', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', transition: 'all 0.2s' }}
-              >
-                Can't speak now
-              </button>
-              <button 
-                onClick={() => onOptionSelect(true)} 
-                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'rgba(255,255,255,0.7)', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', transition: 'all 0.2s' }}
-              >
-                Skip
-              </button>
-            </div>
           </div>
         ) : (
           scenario.options.map((option) => (

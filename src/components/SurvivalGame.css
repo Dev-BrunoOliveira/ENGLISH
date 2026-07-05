@@ -6,7 +6,8 @@
   border-radius: 16px;
   padding: 24px;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   color: white;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   transition: background-color 0.5s ease;
@@ -117,6 +118,7 @@
   grid-template-columns: 1fr;
   gap: 16px;
   margin-top: 40px;
+  padding-bottom: 24px;
 }
 
 @media (min-width: 768px) {

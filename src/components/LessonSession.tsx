@@ -9,10 +9,12 @@ interface LessonSessionProps {
   nativeLang: string;
   onComplete: (earnedXp: number) => void;
   onQuit: () => void;
+  streak: number;
+  xp: number;
   goal?: 'work' | 'travel' | 'entertainment' | 'study' | null;
 }
 
-export const LessonSession: React.FC<LessonSessionProps> = ({ lessonId, nativeLang: _nativeLang, goal, onComplete, onQuit }) => {
+export const LessonSession: React.FC<LessonSessionProps> = ({ lessonId, nativeLang: _nativeLang, goal, streak, xp, onComplete, onQuit }) => {
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [microphoneEnabled, setMicrophoneEnabled] = useState(true);
@@ -72,12 +74,23 @@ export const LessonSession: React.FC<LessonSessionProps> = ({ lessonId, nativeLa
   };
 
   if (isFinished) {
+    const baseXp = levelData.scenarios.length * 15;
+    const streakBonus = streak * 5;
+    const totalXp = baseXp + streakBonus;
+
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '80vh', textAlign: 'center' }}>
         <img src="/mascot.png" alt="Mascot" style={{ width: '240px', height: '240px', objectFit: 'contain', marginBottom: '1.5rem', filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.3))' }} />
-        <h1 style={{ fontSize: '3rem', marginBottom: '1rem', color: 'white' }}>Level Complete!</h1>
-        <p style={{ fontSize: '1.5rem', color: 'var(--text-secondary)', marginBottom: '3rem' }}>You earned <span style={{color: '#3b82f6', fontWeight: 'bold'}}>{levelData.scenarios.length * 15} XP</span>!</p>
-        <button className="btn btn-primary" onClick={() => onComplete(levelData.scenarios.length * 15)} style={{ padding: '16px 48px', fontSize: '1.25rem' }}>Continue</button>
+        <h1 style={{ fontSize: '3rem', marginBottom: '1rem', color: 'white' }}>{levelData.title} Complete!</h1>
+        <p style={{ fontSize: '1.5rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+          You earned <span style={{color: '#3b82f6', fontWeight: 'bold'}}>{totalXp} XP</span>!
+        </p>
+        {streak > 0 && (
+          <p style={{ fontSize: '1.2rem', color: '#f59e0b', marginBottom: '2rem', fontWeight: 'bold', animation: 'pulse 2s infinite' }}>
+            🔥 +{streakBonus} XP (Streak Bonus!)
+          </p>
+        )}
+        <button className="btn btn-primary" onClick={() => onComplete(totalXp)} style={{ padding: '16px 48px', fontSize: '1.25rem', marginTop: streak > 0 ? '0' : '2rem' }}>Continue</button>
       </div>
     );
   }
@@ -90,6 +103,9 @@ export const LessonSession: React.FC<LessonSessionProps> = ({ lessonId, nativeLa
        <ScenarioView 
          scenario={currentScenario}
          progressPercent={progressPercent}
+         levelTitle={levelData.title}
+         streak={streak}
+         xp={xp}
          onQuit={onQuit}
          onOptionSelect={handleOptionSelect}
          onDisableMic={() => setMicrophoneEnabled(false)}

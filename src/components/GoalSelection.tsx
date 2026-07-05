@@ -152,7 +152,7 @@ const translations: Record<string, any> = {
 };
 
 export const GoalSelection: React.FC<GoalSelectionProps> = ({ nativeLang, onSetNativeLang, onSelectGoal }) => {
-  const t = translations[nativeLang] || translations['en']; // fallback to English
+  const t = translations[nativeLang] || translations['en']; 
 
   const goals = [
     {
@@ -198,7 +198,7 @@ export const GoalSelection: React.FC<GoalSelectionProps> = ({ nativeLang, onSetN
       justifyContent: 'center', 
       padding: '2rem',
       minHeight: '100vh',
-      animation: 'fadeInOut 0.5s ease-out backwards' // simple fade in
+      animation: 'fadeInOut 0.5s ease-out backwards' 
     }}>
       
       <img src="/mascot.png" alt="Mascot" style={{ width: '120px', height: '120px', objectFit: 'contain', marginBottom: '1rem', filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.3))' }} />

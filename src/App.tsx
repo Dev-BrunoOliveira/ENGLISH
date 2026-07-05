@@ -106,6 +106,8 @@ function App() {
           lessonId={activeLessonId}
           nativeLang={progress.nativeLang}
           goal={progress.goal}
+          streak={progress.streak}
+          xp={progress.xp}
           onComplete={handleCompleteLesson}
           onQuit={handleQuitLesson}
         />

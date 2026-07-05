@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { getLevelsForGoal } from '../data/levelScenarios';
 import { BookOpen, Lock, Flame, Star, Settings as SettingsIcon } from 'lucide-react';
 import { availableLanguages } from '../data/phrases';
@@ -16,6 +16,21 @@ interface HomeMapProps {
 
 export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, nativeLang, goal, onSetNativeLang, onStartLesson, onOpenSettings }) => {
   const levels = getLevelsForGoal(goal);
+
+  // Calculate Rank based on XP
+  let rank = "Novice";
+  if (xp >= 500) rank = "Explorer";
+  if (xp >= 1500) rank = "Linguist";
+  if (xp >= 3000) rank = "Master";
+  if (xp >= 5000) rank = "Legend";
+
+  useEffect(() => {
+    const el = document.getElementById(`level-${unlockedLessonId}`);
+    if (el) {
+      setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+    }
+  }, [unlockedLessonId]);
+
   return (
     <div style={{ width: '100%', maxWidth: '600px', margin: '0 auto', padding: '1rem' }}>
       {/* Top Bar */}
@@ -53,10 +68,15 @@ export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, 
       </div>
 
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', margin: 0 }}>
-          <img src="/mascot.png" alt="Mascot" style={{ width: '100px', height: '100px', objectFit: 'contain', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))' }} />
-          The 1000 Phrases
-        </h1>
+        <img src="/mascot.png" alt="Mascot" style={{ width: '100px', height: '100px', objectFit: 'contain', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))' }} />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginTop: '1rem' }}>
+          <h1 style={{ fontSize: '2rem', margin: 0 }}>
+            The 1000 Phrases
+          </h1>
+          <span style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', color: 'white', padding: '4px 12px', borderRadius: '999px', fontSize: '0.9rem', fontWeight: 'bold', boxShadow: '0 4px 10px rgba(249, 115, 22, 0.4)' }}>
+            Rank: {rank}
+          </span>
+        </div>
         <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginTop: '0.5rem' }}>Master the most spoken phrases in English!</p>
       </div>
 
@@ -71,7 +91,7 @@ export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, 
           const offset = index % 2 === 0 ? '-40px' : '40px';
 
           return (
-            <div key={level.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', transform: `translateX(${offset})`, position: 'relative' }}>
+            <div id={`level-${level.id}`} key={level.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', transform: `translateX(${offset})`, position: 'relative' }}>
               
               {/* Category Marker if it's the first of its kind */}
               {index === 0 && <div className="category-label">Beginner</div>}
@@ -112,9 +132,12 @@ export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, 
                 )}
               </button>
               
-              <div style={{ marginTop: '1.5rem', textAlign: 'center', background: 'var(--glass-bg)', padding: '12px 16px', borderRadius: '12px', minWidth: '220px', border: '1px solid var(--glass-border)' }}>
-                <div style={{ fontWeight: 'bold', marginBottom: '4px', fontSize: '1.1rem' }}>{level.title}</div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{level.description}</div>
+              <div style={{ marginTop: '1.5rem', textAlign: 'center', background: isCurrent ? 'rgba(249, 115, 22, 0.15)' : 'var(--glass-bg)', padding: '12px 16px', borderRadius: '12px', minWidth: '220px', border: '1px solid', borderColor: isCurrent ? 'var(--accent-primary)' : 'var(--glass-border)', transition: 'all 0.3s' }}>
+                <div style={{ fontWeight: 'bold', marginBottom: '4px', fontSize: '1.1rem' }}>
+                  {level.title}
+                  {isCurrent && <span style={{ marginLeft: '8px', fontSize: '0.75rem', background: 'var(--accent-primary)', color: 'white', padding: '2px 8px', borderRadius: '12px', verticalAlign: 'middle' }}>CURRENT</span>}
+                </div>
+                <div style={{ fontSize: '0.85rem', color: isCurrent ? 'white' : 'var(--text-secondary)' }}>{level.description}</div>
               </div>
             </div>
           );
