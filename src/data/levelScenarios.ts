@@ -55,7 +55,7 @@ export const getLevelsForGoal = (
   
   const levels: LevelData[] = [];
 
-  for (let i = 1; i <= 100; i++) {
+  for (let i = 1; i <= 180; i++) {
     let cat: 'Beginner' | 'Intermediate' | 'Advanced' = 'Beginner';
     if (i > 30 && i <= 70) cat = 'Intermediate';
     if (i > 70) cat = 'Advanced';

@@ -73,8 +73,8 @@ export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, 
 
       {/* Path */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3rem', paddingBottom: '4rem' }}>
-        {levels.slice(0, 20).map((level, index) => {
-          // We only render the first 20 for performance in this UI demo
+        {levels.map((level, index) => {
+          // Render all generated levels
           const isUnlocked = level.id <= unlockedLessonId;
           const isCurrent = level.id === unlockedLessonId;
           
@@ -134,10 +134,7 @@ export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, 
           );
         })}
         
-        {/* Load more placeholder */}
-        <div style={{ textAlign: 'center', color: 'var(--text-secondary)', padding: '2rem' }}>
-           ... 80 more levels to master ...
-        </div>
+        {/* Load more placeholder removed */}
       </div>
     </div>
   );
