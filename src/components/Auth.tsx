@@ -31,8 +31,23 @@ export const Auth: React.FC<AuthProps> = ({ onLogin, onSignup }) => {
   return (
     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', minHeight: '100vh' }}>
       <div className="glass-panel" style={{ width: '100%', maxWidth: '400px', padding: '3rem 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        
-        <img src="/mascot.png" alt="Mascot" style={{ width: '180px', height: '180px', objectFit: 'contain', marginBottom: '1rem', filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.3))' }} />
+        <video 
+          src="/piscando.mp4" 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          style={{ 
+            width: '100%', 
+            maxWidth: '240px',
+            aspectRatio: '1 / 1',
+            objectFit: 'cover', 
+            marginBottom: '1.5rem', 
+            filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.4))', 
+            borderRadius: '50%',
+            backgroundColor: '#fff'
+          }} 
+        />
 
         <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', textAlign: 'center' }}>
           Learn <span className="text-gradient">English</span>
