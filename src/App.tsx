@@ -9,8 +9,8 @@ import { ScreenTransition } from './components/ScreenTransition';
 import { GoalSelection } from './components/GoalSelection';
 
 function App() {
-  const { user, login, signup, logout } = useAuth();
-  const { progress, setNativeLang, setUserGoal, completeLesson, resetProgress } = useProgress();
+  const { user, loading: authLoading, login, loginWithGoogle, signup, logout } = useAuth();
+  const { progress, loading: progressLoading, setNativeLang, setUserGoal, completeLesson, resetProgress } = useProgress(user?.id);
   const [view, setView] = useState<'home' | 'lesson' | 'settings' | 'onboarding'>('home');
   const [activeLessonId, setActiveLessonId] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -61,11 +61,18 @@ function App() {
     navigateWithTransition('lesson', progress.unlockedLessonId || 1, 1500);
   };
 
-  
+  if (authLoading || (user && progressLoading)) {
+    return (
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+        <div style={{ color: 'white', fontSize: '1.25rem' }}>Loading...</div>
+      </div>
+    );
+  }
+
   if (!user) {
     return (
       <>
-        <Auth onLogin={login} onSignup={signup} />
+        <Auth onLogin={login} onSignup={signup} onGoogleLogin={loginWithGoogle} />
         <ScreenTransition isVisible={isTransitioning} />
       </>
     );
