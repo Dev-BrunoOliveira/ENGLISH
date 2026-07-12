@@ -38,6 +38,10 @@ export function useProgress(userId?: string) {
       .eq('user_id', uid)
       .maybeSingle();
 
+    if (error) {
+      console.error('Error fetching progress:', error);
+    }
+
     if (data) {
       setProgress({
         nativeLang: data.native_lang,
