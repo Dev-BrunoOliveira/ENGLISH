@@ -46,15 +46,14 @@ function App() {
   };
 
   useEffect(() => {
-    // Quando o usuário logar, verifica se já escolheu o objetivo
-    if (user) {
+    if (user && !progressLoading) {
       if (!progress.goal) {
         navigateWithTransition('onboarding', null, 1500);
       } else {
-        navigateWithTransition('lesson', progress.unlockedLessonId || 1, 1500);
+        navigateWithTransition('home', null, 1500);
       }
     }
-  }, [user]);
+  }, [user, progressLoading]);
 
   const handleSelectGoal = (goalId: 'work' | 'travel' | 'entertainment' | 'study') => {
     setUserGoal(goalId);
