@@ -12,10 +12,12 @@ export const Auth: React.FC<AuthProps> = ({ onLogin, onSignup, onGoogleLogin }) 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccessMsg('');
 
     if (!email || !password) {
       setError('Please fill in all fields');
@@ -26,6 +28,12 @@ export const Auth: React.FC<AuthProps> = ({ onLogin, onSignup, onGoogleLogin }) 
     
     if (!result.success && result.error) {
       setError(result.error);
+    } else if (!isLoginMode) {
+      // If signup is successful and email confirmation is enabled in Supabase,
+      // the user won't be logged in automatically, so we show this message.
+      setSuccessMsg('Account created! Please check your email to verify your account.');
+      setEmail('');
+      setPassword('');
     }
   };
 
@@ -98,6 +106,7 @@ export const Auth: React.FC<AuthProps> = ({ onLogin, onSignup, onGoogleLogin }) 
           </div>
 
           {error && <div style={{ color: '#ef4444', fontSize: '0.875rem', textAlign: 'center' }}>{error}</div>}
+          {successMsg && <div style={{ color: '#10b981', fontSize: '0.875rem', textAlign: 'center', background: 'rgba(16, 185, 129, 0.1)', padding: '10px', borderRadius: '8px' }}>{successMsg}</div>}
 
           <button 
             type="submit" 
@@ -154,7 +163,7 @@ export const Auth: React.FC<AuthProps> = ({ onLogin, onSignup, onGoogleLogin }) 
               {isLoginMode ? "Don't have an account?" : "Already have an account?"}
             </span>
             <button 
-              onClick={() => { setIsLoginMode(!isLoginMode); setError(''); }}
+              onClick={() => { setIsLoginMode(!isLoginMode); setError(''); setSuccessMsg(''); }}
               style={{ background: 'none', border: 'none', color: 'var(--accent-secondary)', cursor: 'pointer', fontWeight: 'bold' }}
             >
               {isLoginMode ? 'Sign Up' : 'Login'}

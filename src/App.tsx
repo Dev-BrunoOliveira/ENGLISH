@@ -24,6 +24,12 @@ function App() {
     }
   }, [theme]);
 
+  useEffect(() => {
+    // Clear legacy local storage data from previous versions
+    localStorage.removeItem('gamifiedProgress');
+    localStorage.removeItem('englishAppUser');
+  }, []);
+
   const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
   const navigateWithTransition = (
