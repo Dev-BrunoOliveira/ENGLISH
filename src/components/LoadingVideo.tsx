@@ -3,7 +3,7 @@ import React from 'react';
 export const LoadingVideo: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <div style={{ width: '200px', height: '200px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div style={{ width: '300px', height: '300px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <video 
           src="/loading.mp4" 
           autoPlay 
@@ -11,9 +11,11 @@ export const LoadingVideo: React.FC = () => {
           muted 
           playsInline
           style={{ 
-            width: '100%', 
-            height: '100%', 
-            objectFit: 'contain'
+            width: '150%', 
+            height: '150%', 
+            objectFit: 'cover',
+            WebkitMaskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
+            maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)'
           }}
         />
       </div>
