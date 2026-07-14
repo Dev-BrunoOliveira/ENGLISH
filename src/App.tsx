@@ -7,6 +7,7 @@ import { Settings } from './components/Settings';
 import { Auth } from './components/Auth';
 import { ScreenTransition } from './components/ScreenTransition';
 import { GoalSelection } from './components/GoalSelection';
+import { LoadingVideo } from './components/LoadingVideo';
 
 function App() {
   const { user, loading: authLoading, login, loginWithGoogle, signup, logout } = useAuth();
@@ -60,8 +61,8 @@ function App() {
 
   if (authLoading || (user && progressLoading)) {
     return (
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-        <div style={{ color: 'white', fontSize: '1.25rem' }}>Loading...</div>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', backgroundColor: 'var(--bg-color)' }}>
+        <LoadingVideo />
       </div>
     );
   }

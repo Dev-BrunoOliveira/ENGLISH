@@ -1,4 +1,5 @@
 import React from 'react';
+import { LoadingVideo } from './LoadingVideo';
 
 interface ScreenTransitionProps {
   isVisible: boolean;
@@ -19,32 +20,9 @@ export const ScreenTransition: React.FC<ScreenTransitionProps> = ({ isVisible })
       alignItems: 'center',
       animation: 'fadeInOut 1.5s ease-in-out', 
     }}>
-      <div style={{ width: '300px', height: '300px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <video 
-          src="/loading.mp4" 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          style={{ 
-            width: '150%', 
-            height: '150%', 
-            objectFit: 'cover',
-            WebkitMaskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
-            maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)'
-          }}
-        />
-
-      </div>
-      <h2 className="animate-pulse" style={{ marginTop: '20px', color: 'var(--text-secondary)', fontSize: '1.2rem' }}>
-        Loading...
-      </h2>
+      <LoadingVideo />
       <style>
         {`
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
           @keyframes fadeInOut {
             0% { opacity: 0; }
             20% { opacity: 1; }
@@ -56,3 +34,4 @@ export const ScreenTransition: React.FC<ScreenTransitionProps> = ({ isVisible })
     </div>
   );
 };
+
