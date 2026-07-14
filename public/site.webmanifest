@@ -3,19 +3,19 @@
   "short_name": "MySite",
   "icons": [
     {
-      "src": "/web-app-manifest-192x192.png",
+      "src": "/http://127.0.0.1:5500/index.html/web-app-manifest-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/web-app-manifest-512x512.png",
+      "src": "/http://127.0.0.1:5500/index.html/web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#42a9d5",
+  "background_color": "#42a9d5",
   "display": "standalone"
 }
