@@ -1,19 +1,17 @@
 import React, { useEffect } from 'react';
 import { getLevelsForGoal } from '../data/levelScenarios';
-import { BookOpen, Lock, Flame, Star, Settings as SettingsIcon, Sun, Moon } from 'lucide-react';
+import { BookOpen, Lock, Flame, Star, Settings as SettingsIcon } from 'lucide-react';
 
 interface HomeMapProps {
   unlockedLessonId: number;
   streak: number;
   xp: number;
-  theme: 'light' | 'dark';
-  onToggleTheme: () => void;
   onStartLesson: (id: number) => void;
   onOpenSettings: () => void;
   goal?: 'work' | 'travel' | 'entertainment' | 'study' | null;
 }
 
-export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, theme, onToggleTheme, goal, onStartLesson, onOpenSettings }) => {
+export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, goal, onStartLesson, onOpenSettings }) => {
   const levels = getLevelsForGoal(goal);
 
   let rank = "Novice";
@@ -43,14 +41,7 @@ export const HomeMap: React.FC<HomeMapProps> = ({ unlockedLessonId, streak, xp, 
         </div>
         
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <button 
-            className="btn-icon btn-glass" 
-            onClick={onToggleTheme} 
-            title="Toggle Theme" 
-            style={{ padding: '8px', color: theme === 'light' ? '#f59e0b' : 'white' }}
-          >
-            {theme === 'light' ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
+
 
           <button className="btn-icon btn-glass" onClick={onOpenSettings} title="Settings" style={{ padding: '8px' }}>
             <SettingsIcon size={20} />
