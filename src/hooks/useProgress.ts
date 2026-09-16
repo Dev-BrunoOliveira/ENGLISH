@@ -122,6 +122,17 @@ export function useProgress(userId?: string) {
     });
   };
 
+  const addXp = (earnedXp: number) => {
+    setProgress(prev => {
+      const newProgress = {
+        ...prev,
+        xp: prev.xp + earnedXp
+      };
+      updateProgressInDB(newProgress);
+      return newProgress;
+    });
+  };
+
   const resetProgress = () => {
     const defaultProgress: ProgressState = {
       nativeLang: progress.nativeLang,
@@ -135,5 +146,5 @@ export function useProgress(userId?: string) {
     updateProgressInDB(defaultProgress);
   };
 
-  return { progress, loading, setNativeLang, setUserGoal, completeLesson, resetProgress };
+  return { progress, loading, setNativeLang, setUserGoal, completeLesson, addXp, resetProgress };
 }

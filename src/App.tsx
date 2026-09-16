@@ -11,7 +11,7 @@ import { LoadingVideo } from './components/LoadingVideo';
 
 function App() {
   const { user, loading: authLoading, login, loginWithGoogle, signup, logout } = useAuth();
-  const { progress, loading: progressLoading, setNativeLang, setUserGoal, completeLesson, resetProgress } = useProgress(user?.id);
+  const { progress, loading: progressLoading, setNativeLang, setUserGoal, completeLesson, addXp, resetProgress } = useProgress(user?.id);
   const [view, setView] = useState<'home' | 'lesson' | 'settings' | 'onboarding'>('home');
   const [activeLessonId, setActiveLessonId] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -107,9 +107,9 @@ function App() {
           streak={progress.streak}
           xp={progress.xp}
           goal={progress.goal}
-
           onStartLesson={handleStartLesson}
           onOpenSettings={() => navigateWithTransition('settings', null, 800)}
+          onClaimReward={addXp}
         />
       )}
 
